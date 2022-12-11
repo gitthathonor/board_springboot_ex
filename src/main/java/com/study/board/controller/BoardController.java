@@ -1,22 +1,19 @@
 package com.study.board.controller;
 
-import com.study.board.entity.Board;
-import com.study.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import com.study.board.entity.Board;
+import com.study.board.service.BoardService;
 
 @Controller
 public class BoardController {
@@ -28,13 +25,11 @@ public class BoardController {
     public String boardWriteForm() {
         return "boardWrite";
     }
-    
 
     @PostMapping("/board/writePro")
     public String boardWritePro(Board board, Model model, MultipartFile file) throws Exception {
 
         boardService.write(board, file);
-
 
         model.addAttribute("message", "글 작성이 완료되었습니다.");
 
@@ -44,7 +39,8 @@ public class BoardController {
     }
 
     @GetMapping("/board/list")
-    public String boardList(Model model, @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public String boardList(Model model,
+            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Board> list = boardService.boardList(pageable);
 
@@ -57,10 +53,8 @@ public class BoardController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
-
         return "boardList";
     }
-    
 
     @GetMapping("/board/view") // localhost:8080/board/view?id=1
     public String boardView(Model model, Integer id) {
